@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroTech - Маркетплейс услуг сельского хозяйства</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --secondary: #FFC107;
+            --dark: #2E7D32;
+            --light: #E8F5E9;
+            --gray: #f5f5f5;
+            --text: #333;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-4.0.3') center/cover;
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e0a800;
+        }
+        
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .service-content {
+            padding: 20px;
+        }
+        
+        .service-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .service-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .service-params {
+            margin: 15px 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .service-params li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .service-params i {
+            color: var(--primary);
+        }
+        
+        .service-rating {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .stars {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+        
+        .reviews {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .orders-list {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .order-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-service {
+            font-weight: 500;
+            color: var(--primary-dark);
+        }
+        
+        .order-customer {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .order-date {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .order-actions button {
+            background: none;
+            border: none;
+            color: #f44336;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .order-actions button:hover {
+            color: #d32f2f;
+        }
+        
+        .no-orders {
+            text-align: center;
+            padding: 40px;
+            color: #777;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 5px;
+            color: var(--white);
+            background-color: var(--primary);
+            box-shadow: var(--shadow);
+            z-index: 1100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(150%);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .footer-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .footer-social a:hover {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 32px;
+            }
+            
+            .section-title h2 {
+                font-size: 28px;
+            }
+            
+            .order-item {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Уведомление -->
+        <div class="notification" :class="{ show: notification.show }">
+            <i :class="notification.icon"></i>
+            <span>{{ notification.message }}</span>
+        </div>
+        
+        <!-- Шапка -->
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-tractor"></i>
+                        <h1>AgroTech</h1>
+                    </div>
+                    <nav class="nav-links">
+                        <a href="#" @click.prevent="currentView = 'catalog'" :class="{ active: currentView === 'catalog' }">Каталог услуг</a>
+                        <a href="#" @click.prevent="currentView = 'orders'" :class="{ active: currentView === 'orders' }">Мои заказы <span v-if="orders.length > 0">({{ orders.length }})</span></a>
+                        <a href="#" @click.prevent="showAbout = true">О нас</a>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Герой-секция -->
+        <section class="hero">
+            <div class="container">
+                <h2>Современные технологии для сельского хозяйства</h2>
+                <p>Закажите услуги дронов и роботов для повышения эффективности вашего сельхозпредприятия</p>
+                <a href="#" class="btn" @click.prevent="currentView = 'catalog'">Посмотреть услуги</a>
+            </div>
+        </section>
+        
+        <!-- Каталог услуг -->
+        <section class="section" v-if="currentView === 'catalog'">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Каталог услуг</h2>
+                    <p>Выберите необходимую услугу из нашего каталога и оформите заказ онлайн</p>
+                </div>
+                
+                <div class="services-grid">
+                    <div class="service-card" v-for="service in services" :key="service.id">
+                        <div class="service-image" :style="{ backgroundImage: 'url(' + service.image + ')' }"></div>
+                        <div class="service-content">
+                            <h3>{{ service.name }}</h3>
+                            <p>{{ service.description }}</p>
+                            <div class="service-price">{{ service.price }} руб.</div>
+                            <ul class="service-params">
+                                <li v-for="(value, param) in service.parameters" :key="param">
+                                    <i class="fas fa-check-circle"></i>
+                                    <strong>{{ param }}:</strong> {{ value }}
+                                </li>
+                            </ul>
+                            <div class="service-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star" v-for="n in 5" :key="n" :class="{ 'far': n > service.rating }"></i>
+                                </div>
+                                <div class="reviews">({{ service.reviews }} отзывов)</div>
+                            </div>
+                            <button class="btn" @click="openOrderForm(service)">Заказать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Мои заказы -->
+        <section class="section" v-if="currentView === 'orders'">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Мои заказы</h2>
+                    <p>Здесь вы можете просмотреть и управлять своими активными заказами</p>
+                </div>
+                
+                <div class="orders-list">
+                    <div v-if="orders.length === 0" class="no-orders">
+                        <i class="fas fa-inbox" style="font-size: 60px; margin-bottom: 20px; color: #ccc;"></i>
+                        <h3>У вас пока нет активных заказов</h3>
+                        <p>Перейдите в каталог услуг, чтобы сделать заказ</p>
+                        <button class="btn" @click="currentView = 'catalog'">Перейти в каталог</button>
+                    </div>
+                    
+                    <div class="order-item" v-for="order in orders" :key="order.id">
+                        <div>
+                            <div class="order-service">{{ getServiceName(order.serviceId) }}</div>
+                            <div class="order-customer">{{ order.name }}, {{ order.phone }}</div>
+                        </div>
+                        <div class="order-address">{{ order.address }}</div>
+                        <div class="order-date">{{ formatDate(order.date) }}</div>
+                        <div class="order-actions">
+                            <button @click="cancelOrder(order.id)" title="Отменить заказ">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Форма заказа (модальное окно) -->
+        <div class="modal" v-if="showOrderForm">
+            <div class="modal-content">
+                <span class="close-modal" @click="showOrderForm = false">&times;</span>
+                <h2>Оформление заказа</h2>
+                <p>Услуга: <strong>{{ selectedService.name }}</strong></p>
+                <p>Стоимость: <strong>{{ selectedService.price }} руб.</strong></p>
+                
+                <form @submit.prevent="submitOrder">
+                    <div class="form-group">
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" class="form-control" v-model="orderForm.name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Номер телефона</label>
+                        <input type="tel" id="phone" class="form-control" v-model="orderForm.phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Адрес выполнения услуги</label>
+                        <input type="text" id="address" class="form-control" v-model="orderForm.address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Дата и время выполнения</label>
+                        <input type="datetime-local" id="date" class="form-control" v-model="orderForm.date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Дополнительные комментарии</label>
+                        <textarea id="comments" class="form-control" v-model="orderForm.comments"></textarea>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="button" class="btn" style="background-color: #ccc; color: #333;" @click="showOrderForm = false">Отмена</button>
+                        <button type="submit" class="btn">Подтвердить заказ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- О нас (модальное окно) -->
+        <div class="modal" v-if="showAbout">
+            <div class="modal-content">
+                <span class="close-modal" @click="showAbout = false">&times;</span>
+                <h2>О компании AgroTech</h2>
+                <p>AgroTech - это инновационный маркетплейс услуг для сельского хозяйства с использованием современных технологий, таких как дроны и роботы.</p>
+                
+                <h3>Наша миссия</h3>
+                <p>Мы стремимся сделать передовые сельскохозяйственные технологии доступными для фермеров и агропредприятий любого масштаба, повышая эффективность и снижая затраты на производство.</p>
+                
+                <h3>Преимущества</h3>
+                <ul class="service-params">
+                    <li><i class="fas fa-check"></i> Современные технологии дронов и роботов</li>
+                    <li><i class="fas fa-check"></i> Профессиональные операторы с сертификатами</li>
+                    <li><i class="fas fa-check"></i> Оптимальные цены на услуги</li>
+                    <li><i class="fas fa-check"></i> Гарантия качества выполнения работ</li>
+                    <li><i class="fas fa-check"></i> Экологически безопасные методы обработки</li>
+                </ul>
+                
+                <h3>Контакты</h3>
+                <p>Телефон: +7 (999) 123-45-67</p>
+                <p>Email: info@agrotech.ru</p>
+                <p>Адрес: г. Москва, ул. Сельскохозяйственная, д. 15</p>
+            </div>
+        </div>
+        
+        <!-- Футер -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>AgroTech</h3>
+                        <p>Инновационный маркетплейс услуг для сельского хозяйства с использованием дронов и роботов.</p>
+                        <div class="footer-social">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Наши услуги</h3>
+                        <ul class="footer-links">
+                            <li v-for="service in services.slice(0, 5)" :key="service.id">
+                                <a href="#" @click.prevent="openOrderForm(service)">{{ service.name }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Полезные ссылки</h3>
+                        <ul class="footer-links">
+                            <li><a href="#" @click.prevent="currentView = 'catalog'">Каталог услуг</a></li>
+                            <li><a href="#" @click.prevent="currentView = 'orders'">Мои заказы</a></li>
+                            <li><a href="#" @click.prevent="showAbout = true">О нас</a></li>
+                            <li><a href="#">Политика конфиденциальности</a></li>
+                            <li><a href="#">Условия использования</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h3>Контакты</h3>
+                        <ul class="footer-links">
+                            <li><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Сельскохозяйственная, д. 15</li>
+                            <li><i class="fas fa-phone"></i> +7 (999) 123-45-67</li>
+                            <li><i class="fas fa-envelope"></i> info@agrotech.ru</li>
+                            <li><i class="fas fa-clock"></i> Пн-Пт: 9:00 - 18:00</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    &copy; 2025 AgroTech. Все права защищены.
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp, ref, reactive, onMounted } = Vue;
+        
+        createApp({
+            setup() {
+                // Состояние приложения
+                const currentView = ref('catalog');
+                const showOrderForm = ref(false);
+                const showAbout = ref(false);
+                const selectedService = ref(null);
+                const orders = ref([]);
+                
+                // Форма заказа
+                const orderForm = reactive({
+                    name: '',
+                    phone: '',
+                    address: '',
+                    date: '',
+                    comments: '',
+                    serviceId: null
+                });
+                
+                // Уведомления
+                const notification = reactive({
+                    show: false,
+                    message: '',
+                    icon: ''
+                });
+                
+                // Каталог услуг
+                const services = ref([
+                    {
+                        id: 1,
+                        name: "Опрыскивание полей",
+                        description: "Точечное опрыскивание сельскохозяйственных культур с использованием дронов",
+                        price: 5000,
+                        image: "https://images.unsplash.com/photo-1596466596120-2a8e4b5dddb7?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 50 га",
+                            "Тип культур": "Зерновые, овощи, фрукты",
+                            "Скорость": "10 га/час"
+                        },
+                        rating: 4.5,
+                        reviews: 24
+                    },
+                    {
+                        id: 2,
+                        name: "Мониторинг урожайности",
+                        description: "Анализ состояния посевов и прогнозирование урожайности с помощью мультиспектральных камер",
+                        price: 3000,
+                        image: "https://images.unsplash.com/photo-1560785496-3c9d27877182?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 100 га",
+                            "Точность": "±5%",
+                            "Отчет": "Цветовая карта поля"
+                        },
+                        rating: 4.8,
+                        reviews: 18
+                    },
+                    {
+                        id: 3,
+                        name: "Автоматизированная прополка",
+                        description: "Точечное уничтожение сорняков с помощью роботизированных систем",
+                        price: 7000,
+                        image: "https://images.unsplash.com/photo-1576675466969-38eeae4b41be?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 30 га",
+                            "Тип культур": "Овощи, ягоды",
+                            "Эффективность": "90% сорняков"
+                        },
+                        rating: 4.3,
+                        reviews: 15
+                    },
+                    {
+                        id: 4,
+                        name: "Картографирование полей",
+                        description: "Создание точных 3D-карт рельефа и контуров полей",
+                        price: 4000,
+                        image: "https://images.unsplash.com/photo-1507582020474-9a35b7d455d9?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 200 га",
+                            "Точность": "2 см",
+                            "Форматы": "GeoTIFF, Shapefile"
+                        },
+                        rating: 4.7,
+                        reviews: 22
+                    },
+                    {
+                        id: 5,
+                        name: "Поиск вредителей",
+                        description: "Обнаружение очагов вредителей с помощью тепловизоров",
+                        price: 4500,
+                        image: "https://images.unsplash.com/photo-1639754390580-2e7436fc5a13?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 80 га",
+                            "Тип вредителей": "Саранча, колорадский жук",
+                            "Точность": "95%"
+                        },
+                        rating: 4.6,
+                        reviews: 17
+                    },
+                    {
+                        id: 6,
+                        name: "Автополив растений",
+                        description: "Автоматизированный полив растений с учетом влажности почвы",
+                        price: 6000,
+                        image: "https://images.unsplash.com/photo-1614294149010-950b698f72c0?ixlib=rb-4.0.3",
+                        parameters: {
+                            "Площадь": "до 40 га",
+                            "Система": "Капельный полив",
+                            "Экономия воды": "до 40%"
+                        },
+                        rating: 4.4,
+                        reviews: 19
+                    }
+                ]);
+                
+                // Открытие формы заказа
+                const openOrderForm = (service) => {
+                    selectedService.value = service;
+                    orderForm.serviceId = service.id;
+                    showOrderForm.value = true;
+                    
+                    // Установка даты по умолчанию (завтра, 10:00)
+                    const tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    tomorrow.setHours(10, 0, 0, 0);
+                    
+                    const formattedDate = tomorrow.toISOString().slice(0, 16);
+                    orderForm.date = formattedDate;
+                };
+                
+                // Отправка заказа
+                const submitOrder = () => {
+                    // Генерация уникального ID заказа
+                    const orderId = Date.now();
+                    
+                    // Создание объекта заказа
+                    const newOrder = {
+                        id: orderId,
+                        serviceId: orderForm.serviceId,
+                        name: orderForm.name,
+                        phone: orderForm.phone,
+                        address: orderForm.address,
+                        date: orderForm.date,
+                        comments: orderForm.comments
+                    };
+                    
+                    // Добавление заказа в список
+                    orders.value.push(newOrder);
+                    
+                    // Сохранение в localStorage
+                    saveOrdersToLocalStorage();
+                    
+                    // Закрытие формы
+                    showOrderForm.value = false;
+                    
+                    // Очистка формы
+                    orderForm.name = '';
+                    orderForm.phone = '';
+                    orderForm.address = '';
+                    orderForm.date = '';
+                    orderForm.comments = '';
+                    
+                    // Показать уведомление
+                    showNotification('Ваш заказ успешно оформлен!', 'fas fa-check-circle');
+                    
+                    // Переход на страницу заказов
+                    currentView.value = 'orders';
+                };
+                
+                // Отмена заказа
+                const cancelOrder = (orderId) => {
+                    orders.value = orders.value.filter(order => order.id !== orderId);
+                    saveOrdersToLocalStorage();
+                    showNotification('Заказ успешно отменен', 'fas fa-info-circle');
+                };
+                
+                // Получение названия услуги по ID
+                const getServiceName = (serviceId) => {
+                    const service = services.value.find(s => s.id === serviceId);
+                    return service ? service.name : 'Услуга недоступна';
+                };
+                
+                // Форматирование даты
+                const formatDate = (dateString) => {
+                    const date = new Date(dateString);
+                    return date.toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                };
+                
+                // Показать уведомление
+                const showNotification = (message, icon) => {
+                    notification.message = message;
+                    notification.icon = icon;
+                    notification.show = true;
+                    
+                    setTimeout(() => {
+                        notification.show = false;
+                    }, 3000);
+                };
+                
+                // Сохранение заказов в localStorage
+                const saveOrdersToLocalStorage = () => {
+                    localStorage.setItem('agroTechOrders', JSON.stringify(orders.value));
+                };
+                
+                // Загрузка заказов из localStorage
+                const loadOrdersFromLocalStorage = () => {
+                    const savedOrders = localStorage.getItem('agroTechOrders');
+                    if (savedOrders) {
+                        orders.value = JSON.parse(savedOrders);
+                    }
+                };
+                
+                // Загрузка данных при монтировании приложения
+                onMounted(() => {
+                    loadOrdersFromLocalStorage();
+                });
+                
+                return {
+                    currentView,
+                    showOrderForm,
+                    showAbout,
+                    selectedService,
+                    orders,
+                    orderForm,
+                    services,
+                    notification,
+                    openOrderForm,
+                    submitOrder,
+                    cancelOrder,
+                    getServiceName,
+                    formatDate
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
